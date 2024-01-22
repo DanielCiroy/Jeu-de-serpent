@@ -61,7 +61,7 @@ function draw() {
     context.drawImage(background, 0, 0)
     for (let index = 0; index < snake.length; index++) {
         if (index === 0) {
-            context.fillStyle = "black"
+            context.fillStyle = "with"
         }
         else {
             context.fillStyle = "red"
@@ -105,9 +105,9 @@ function draw() {
     //les collisions
     if (snakeX <= -unit || snakeX >= canvas.width || snakeY <= -unit || snakeY >= canvas.height || collisionBody(newHead, snake)) {
         clearInterval(play)
-
+        button.style.display = 'block'
         deadAudio.play()
-        clickButton.style.display = 'block'
+        //  clickButton.style.display = 'block'
 
     }
     snake.unshift(newHead)
