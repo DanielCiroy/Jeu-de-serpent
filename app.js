@@ -8,7 +8,7 @@ const background = new Image()
 background.src = 'background.png'
 
 const foodImg = new Image()
-foodImg.src  = 'food.png'
+foodImg.src = 'food.png'
 
 const eatAudio = new Audio()
 eatAudio.src = 'eat.mp3'
@@ -19,94 +19,103 @@ deadAudio.src = 'dead.mp3'
 const unit = 30
 
 let food = {
-    x:Math.floor(Math.random() *19+1)*unit,
-    y:Math.floor(Math.random() *19+1)*unit
+    x: Math.floor(Math.random() * 19 + 1) * unit,
+    y: Math.floor(Math.random() * 19 + 1) * unit
 }
 
-snake = []
+const snake = []
 snake[0] = {
-    x:10*unit,
-    y:10*unit
+    x: 10 * unit,
+    y: 9 * unit
 }
+
+
+
 
 //deplacement avec le clavier
-let d
-document.addEventListener('keydown', (e)=>{
-    if(e.keyCode == 37 && d !="R"){
+let d = null
+document.addEventListener('keydown', (e) => {
+    if (e.keyCode == 37 && d != "R") {
         d = "L"
     }
-    else if(e.keyCode == 38 && d !="D"){
+    else if (e.keyCode == 38 && d != "D") {
         d = "U"
     }
-    else if(e.keyCode == 39 && d !="L"){
+    else if (e.keyCode == 39 && d != "L") {
         d = "R"
     }
-    else if(e.keyCode == 40 && d !="U"){
+    else if (e.keyCode == 40 && d != "U") {
         d = "D"
     }
 })
-function collisionBody(head,snake){
+function collisionBody(head, snake) {
     for (let index = 0; index < snake.length; index++) {
-        if(head.x == snake[index].x && head.y ==snake[index].y){
+        if (head.x == snake[index].x && head.y == snake[index].y) {
             return true
         }
-        
+
     }
     return false
 }
-function draw(){
-    context.drawImage(background,0,0)
+function draw() {
+    context.drawImage(background, 0, 0)
     for (let index = 0; index < snake.length; index++) {
-        if(index === 0){
+        if (index === 0) {
             context.fillStyle = "black"
         }
-        else{
+        else {
             context.fillStyle = "red"
         }
-        context.fillRect(snake[index].x,snake[index].y,unit,unit)
+        context.fillRect(snake[index].x, snake[index].y, unit, unit)
         context.strokeStyle = 'yellow'
-        context.strokeRect(snake[index].x,snake[index].y,unit,unit)
-        
+        context.strokeRect(snake[index].x, snake[index].y, unit, unit)
+
     }
 
-    context.drawImage(foodImg,food.x,food.y)
+    context.drawImage(foodImg, food.x, food.y)
 
     let snakeX = snake[0].x
     let snakeY = snake[0].y
 
-    
+
 
     //mager la pomme
-    if(snakeX == food.x && snakeY == food.y){
+    if (snakeX == food.x && snakeY == food.y) {
         food = {
-            x:Math.floor(Math.random() *19+1)*unit,
-            y:Math.floor(Math.random() *19+1)*unit
+            x: Math.floor(Math.random() * 19 + 1) * unit,
+            y: Math.floor(Math.random() * 19 + 1) * unit
         }
-        score +=1
+        score += 1
         eatAudio.play()
     }
-    else{
+    else {
         snake.pop()
     }
 
 
-    if(d=="L") snakeX -=unit
-    if(d=="U") snakeY -=unit
-    if(d=="R") snakeX +=unit
-    if(d=="D") snakeY +=unit
+    if (d == "L") snakeX -= unit
+    if (d == "U") snakeY -= unit
+    if (d == "R") snakeX += unit
+    if (d == "D") snakeY += unit
 
     let newHead = {
-        x:snakeX,
-        y:snakeY
+        x: snakeX,
+        y: snakeY
     }
     //les collisions
-    if(snakeX<=-unit || snakeX>=canvas.width || snakeY<=-unit || snakeY>=canvas.height ||collisionBody(newHead,snake)){
+    if (snakeX <= -unit || snakeX >= canvas.width || snakeY <= -unit || snakeY >= canvas.height || collisionBody(newHead, snake)) {
         clearInterval(play)
+
         deadAudio.play()
+        clickButton.style.display = 'block'
+
     }
     snake.unshift(newHead)
     scoreSpan.textContent = score
 
 }
+const clickButton = () => {
+    window.location.reload()
+}
 
-let play = setInterval(draw,100)
+let play = setInterval(draw, 100)
