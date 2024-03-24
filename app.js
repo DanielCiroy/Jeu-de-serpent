@@ -1,5 +1,6 @@
 const canvas = document.querySelector('#canvas')
 const scoreSpan = document.querySelector('.score')
+const button = document.querySelector('.replay')
 let score = 0
 
 const context = canvas.getContext('2d')
@@ -29,53 +30,75 @@ snake[0] = {
     y: 9 * unit
 }
 
-
-
-
-//deplacement avec le clavier
-let d = null
+let direction = null
 document.addEventListener('keydown', (e) => {
-    if (e.keyCode == 37 && d != "R") {
+    if (e.keycode == 37 && direction != "R") {
         d = "L"
     }
-    else if (e.keyCode == 38 && d != "D") {
+    else if (e.keycode == 38 && direction != "D") {
         d = "U"
     }
-    else if (e.keyCode == 39 && d != "L") {
+    else if (e.keycode == 39 && direction != "L") {
         d = "R"
     }
-    else if (e.keyCode == 40 && d != "U") {
+    else if (e.keycode == 40 && direction != "U") {
         d = "D"
     }
 })
-function collisionBody(head, snake) {
-    for (let index = 0; index < snake.length; index++) {
-        if (head.x == snake[index].x && head.y == snake[index].y) {
-            return true
-        }
 
-    }
-    return false
-}
+
+
+
 function draw() {
     context.drawImage(background, 0, 0)
+    context.drawImage(foodImg, food.x, food.y)
     for (let index = 0; index < snake.length; index++) {
         if (index === 0) {
-            context.fillStyle = "with"
+            context.fillStyle = "withe"
         }
         else {
             context.fillStyle = "red"
         }
         context.fillRect(snake[index].x, snake[index].y, unit, unit)
-        context.strokeStyle = 'yellow'
         context.strokeRect(snake[index].x, snake[index].y, unit, unit)
+        context.strokeStyle = 'green'
+
 
     }
 
-    context.drawImage(foodImg, food.x, food.y)
 
     let snakeX = snake[0].x
     let snakeY = snake[0].y
+
+
+    if (direction == "L") snakeX -= unit
+    if (direction == "U") snakeY -= unit
+    if (direction == "R") snakeX += unit
+    if (direction == "D") snakeY += unit
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -93,11 +116,6 @@ function draw() {
     }
 
 
-    if (d == "L") snakeX -= unit
-    if (d == "U") snakeY -= unit
-    if (d == "R") snakeX += unit
-    if (d == "D") snakeY += unit
-
     let newHead = {
         x: snakeX,
         y: snakeY
@@ -114,6 +132,21 @@ function draw() {
     scoreSpan.textContent = score
 
 }
+
+
+
+
+
+function collisionBody(head, snake) {
+    for (let index = 0; index < snake.length; index++) {
+        if (head.x == snake[index].x && head.y == snake[index].y) {
+            return true
+        }
+
+    }
+    return false
+}
+
 const clickButton = () => {
     window.location.reload()
 }
