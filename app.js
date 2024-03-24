@@ -76,6 +76,22 @@ function draw() {
     if (direction == "R") snakeX += unit
     if (direction == "D") snakeY += unit
 
+    snake.pop()
+    let newHead = {
+        x: snakeX,
+        y: snakeY
+    }
+
+    snake.unshift(newHead)
+
+    if (snakeX <= -unit || snakeX >= canvas.width || snakeY <= -unit || snakeY >= canvas.height || collisionBody(newHead, snake)) {
+        deadAudio.play()
+        clearInterval(play)
+        button.style.display = 'block'
+
+        //  clickButton.style.display = 'block'
+
+    }
 
 
 
@@ -116,18 +132,8 @@ function draw() {
     }
 
 
-    let newHead = {
-        x: snakeX,
-        y: snakeY
-    }
     //les collisions
-    if (snakeX <= -unit || snakeX >= canvas.width || snakeY <= -unit || snakeY >= canvas.height || collisionBody(newHead, snake)) {
-        clearInterval(play)
-        button.style.display = 'block'
-        deadAudio.play()
-        //  clickButton.style.display = 'block'
 
-    }
     snake.unshift(newHead)
     scoreSpan.textContent = score
 
